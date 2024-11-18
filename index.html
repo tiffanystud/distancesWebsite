@@ -4,25 +4,38 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Distances</title>
+  <link rel="stylesheet" href="styles/index.css">
+  <link rel="stylesheet" href="styles/fonts.css">
   <!-- links -->
 </head>
 <body>
   <main>
     <section id="links">
-      <a href="#">Länk till sidan på webben</a>
-      <a href="#">Länk till Github repo</a>
+      <a href="#" target="_blank">Länk till sidan på webben</a>
+      <a href="https://github.com/tiffanystud/distances-website" target="_blank">Länk till Github repo</a>
+      <!-- GÖR PUBLC!!! -->
     </section>
+
     <section>
       <h1>Närmaste och längst bort i Centraleuropa</h1>
       <h2></h2>
-      <h3>Av städerna i databasen ligger <span id="closest"></span> närmast och <span id="furthest"></span> längst bort</h3>
+      <h3>
+        Av städerna i databasen ligger
+         <span id="closest"></span> närmast och 
+         <span id="furthest"></span> längst bort
+      </h3>
+
       <div id="cities"></div>
     </section>
+
     <section>
       <h1>Distanser (i mil)</h1>
       <div id="table"></div>
     </section>
+
   </main>
   <!-- scripts -->
+  <script src="database/database.js"></script>
+  <script src="index.js"></script>
 </body>
 </html>
