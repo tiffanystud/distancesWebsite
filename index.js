@@ -1,27 +1,29 @@
 // Recommended: All functions declared here
 
-//Sätter chosenCity till T/F om target matchar något namn i "cities"
+
 function isCityFound(target) {
     let cityFound = false;
     let chosenCity = null;
     const targetLC = target.toLowerCase();
 
+    //Sätter "chosenCity" till T/F om "target" matchar något namn i "cities"
     for (let cityValue of cities) {
         const cityValueLC = cityValue.name.toLowerCase()
-        console.log("Innan if funktionen.");
-
+        titleElem = document.querySelector("title");
         if (targetLC == cityValueLC) {
-            console.log("Inuti if-satsen")
             //Jämför target med indexerad (chosenCity) array i Cities
             cityFound = true;
+            h2.textContent = target + ' (' + cityValue.country + ')';
             chosenCity = cityValue;
-            console.log(cityFound);
+            //Sätt rätt title (fliken)
+            titleElem.innerText = cityValue.name;
+            //Avbryt loopen, chosenCity=T, staden finns i databasen
             break;
         } else {
-            console.log("Denna stad finns ej");
-            console.log(cityFound);
+            h2.textContent = target + " finns inte i databasen"
+            //Sätt rätt title (fliken)
+            titleElem.innerText = "Not Found"
         }
-        console.log("Chosen city = '" + chosenCity + "'");
         console.log("__________")
     }
 };
@@ -37,7 +39,4 @@ const divCities = document.getElementById("cities");
 // Recommended: Ask for the city name and then the rest of the code
 
 const target = prompt("Vilken stad?");
-console.log(target);
-h2.textContent = target;
-
 isCityFound(target);
