@@ -1,5 +1,14 @@
 // Recommended: All functions declared here
 
+//Skapar divar för varje stad som appendar vid funktionsanrop. 
+function createAllCityBoxes(city) {
+    const cityDiv = document.createElement("div");
+    cityDiv.classList.add("cityBox");
+    cityDiv.textContent = city.name;
+    return cityDiv;
+}
+
+
 
 function isCityFound(target) {
     let cityFound = false;
@@ -26,6 +35,7 @@ function isCityFound(target) {
         }
         console.log("__________")
     }
+    return cityFound;
 };
 
 // Recommended: constants with references to existing HTML-elements
@@ -39,4 +49,14 @@ const divCities = document.getElementById("cities");
 // Recommended: Ask for the city name and then the rest of the code
 
 const target = prompt("Vilken stad?");
-isCityFound(target);
+let divCitiesElem = document.getElementById("cities");
+
+//Anrop av funktionen "createAllCityBoxes" för att skapa divar för varje stad.
+for (let city of cities) {
+    divCitiesElem.append(createAllCityBoxes(city));
+};
+
+
+
+const cityMatched = isCityFound(target);
+console.log(cityMatched);
