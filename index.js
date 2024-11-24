@@ -76,7 +76,7 @@ function updateCityBoxes(targetCityName) {
     }
 }
 
-//Kollar om staden finns i "cities"
+//Kollar om staden finns i "cities" 
 function isCityFound(target) {
     let cityFound = false;
     let chosenCity = null;
