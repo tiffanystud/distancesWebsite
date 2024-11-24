@@ -26,21 +26,99 @@ function markCityBox(cityObject, kindOfCity) {
 
 //--------------------------------------------------
 //--------------------------------------------------
-function createDistanceTable(arrayElems) {
-
-    //Interera över alla element i distances, lägg till alla unika städer (dvs. kontroll av dubbletter)
+function createDistanceTable() {
+    //Skapar en lista av unika cityIds från distances
+    //Här itereras alla avstånd i distances och samlar alla unika städer (city1 och city2)
     const cityIds = [];
     for (let i = 0; i < distances.length; i++) {
         if (!cityIds.includes(distances[i].city1)) {
-            cityIds.push(distances[i].city1);
-        }; 
+            cityIds.push(distances[i].city1);  //Lägger till city1 om staden inte redan finns
+        }
         if (!cityIds.includes(distances[i].city2)) {
-            cityIds.push(distances[i].city2);
-        }; 
-    };
+            cityIds.push(distances[i].city2);  //Lägger till city2 om staden inte redan finns
+        }
+    }
+
+    //Sorterar cityIds i stigande ordning baserat på deras id
+    cityIds.sort((a, b) => a - b);
+
+    //Sparar antalet städer
+    const citiesCount = cityIds.length; 
+    
+    //Skapar en div som ska innehålla toppraden för städerna (kolumnrubrikerna) header-row
+    const headerRow = document.createElement("div");
+    headerRow.classList.add("head_row", "cell");
+    tableElem.appendChild(headerRow);  // Lägg till header-raden i tabellen
 
 
-}; //Fyll udda rutor (med modulus??)
+    //Går igenom cityIds och skapar en cell för varje stad
+    for (let i = 0; i < citiesCount; i++) {
+        const colHeaderCell = document.createElement("div");
+        colHeaderCell.classList.add("head_column", "cell");
+        colHeaderCell.textContent = cityIds[i]; //Sätter stadens id som kolumnrubrik
+        tableElem.appendChild(colHeaderCell);
+
+        //Lägger till en klass för jämna kolumner
+        if (i % 2 === 0) {
+            colHeaderCell.classList.add("even_col");
+        }
+    }
+
+    //Skapa rader för varje stad (rowHeaderCell) och fyll cellerna med avstånd
+    for (let i = 0; i < citiesCount; i++) {
+        //Skapa ett radhuvud (stadens namn) för varje rad
+        const rowHeaderCell = document.createElement("div");
+        rowHeaderCell.classList.add("head_row", "cell");
+
+        //Hitta staden i cities-arrayen baserat på id och sätt stadens namn i rowHeaderCell
+        const city = cities.find(city => city.id === cityIds[i]);
+        rowHeaderCell.textContent = city.id + "-" + city.name;  // Använd stadens namn om 
+        tableElem.appendChild(rowHeaderCell);
+
+        //Lägg till en klass för jämna rader
+        if (i % 2 === 0) {
+            rowHeaderCell.classList.add("even_row");
+        }
+
+        //Skapa celler för varje avstånd mellan städer
+        //Varje stad gås igenom, skapar en cell för varje avstånd mellan den aktuella staden och den andra staden
+        for (let j = 0; j < citiesCount; j++) {
+            const cellElem = document.createElement("div");
+            cellElem.classList.add("cell");
+
+            //Lägg till en klass för jämna rader och kolumner
+            if (i % 2 === 0) {
+                cellElem.classList.add("even_row");
+            }
+            if (j % 2 === 0) {
+                cellElem.classList.add("even_col");
+            }
+
+            //Hitta avståndet mellan de två städerna (cityIds[i] och cityIds[j])
+            let distanceMiles = "";
+            for (let k = 0; k < distances.length; k++) {
+
+                //Kolla om avståndsförhållandet gäller mellan de två städerna
+                if (
+                    (distances[k].city1 === cityIds[i] && distances[k].city2 === cityIds[j]) 
+                    ||
+                    (distances[k].city2 === cityIds[i] && distances[k].city1 === cityIds[j])
+                ) {
+
+                    //Hämta avståndet och ta bort den sista siffran 
+                    distanceMiles = distances[k].distance.toString().slice(0, -1);
+
+                    //Avbryt om avståndet är funnet, så behöver det inte letas igenom alla objekt i distances.
+                    break;
+                }
+            }
+
+            //Sätt avståndet i cellens innehåll
+            cellElem.textContent = distanceMiles;
+            tableElem.appendChild(cellElem);  //Lägg till cellen i tabellen
+        }
+    }
+}
 //--------------------------------------------------
 //--------------------------------------------------
 
@@ -100,6 +178,4 @@ const cityMatched = isCityFound(target);
 
 
 // Interering av distances i databasen, det görs ett funktionsanrop per element/object i distances arrayen. 
-for (let arrayElems of distances) {
-    createDistanceTable(arrayElems);
-}
+createDistanceTable();
