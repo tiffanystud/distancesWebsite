@@ -43,6 +43,17 @@ function markCityBox(kindOfCityElem, kindOfClassPara) {
     }
 }
 
+function findCityById(keyOppositeValuePara) {
+
+    for (let varCity of cities) {
+        if (varCity.id === keyOppositeValuePara) {
+            return varCity;
+        }
+    }
+
+    return null;
+}
+
 //Hitta staden som ligger närmst och länsgt bort från vald stad
 function findClosestAndFurthest(targetCityId) {
     let closestCity = null;
