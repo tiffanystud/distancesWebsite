@@ -120,8 +120,8 @@ function distanceBoxText(furthestCityPara, closestCityPara) {
     const closestBoxElem = document.querySelector(".closest");
     const furthestBoxElem = document.querySelector(".furthest");
 
-    closestBoxElem.textContent += " is " + closestCityPara.distance / 10 + " miles away";
-    furthestBoxElem.textContent += " is " + furthestCityPara.distance / 10 + " miles away";
+    closestBoxElem.textContent += " ligger " + closestCityPara.distance / 10 + " mil bort";
+    furthestBoxElem.textContent += " ligger " + furthestCityPara.distance / 10 + " mil bort";
 
     const closestIdInH3 = document.querySelector("#closest");
     const furthestIdInH3 = document.querySelector("#furthest");
