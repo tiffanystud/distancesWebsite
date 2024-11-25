@@ -1,3 +1,6 @@
+
+// Recommended: All functions declared here
+
 function createCityBoxes() {
 
     for (let city of cities) {
@@ -104,6 +107,29 @@ function getCityByDistance(targetPara, farOrClosePara) {
     return varTargetCity;
 }
 
+function getClosestCity(targetPara) {
+    return getCityByDistance(targetPara, true);
+}
+
+function getFurthestCity(targetPara) {
+    return getCityByDistance(targetPara, false);
+}
+
+function distanceBoxText(furthestCityPara, closestCityPara) {
+    
+    const closestBoxElem = document.querySelector(".closest");
+    const furthestBoxElem = document.querySelector(".furthest");
+
+    closestBoxElem.textContent += " is " + closestCityPara.distance / 10 + " miles away";
+    furthestBoxElem.textContent += " is " + furthestCityPara.distance / 10 + " miles away";
+
+    const closestIdInH3 = document.querySelector("#closest");
+    const furthestIdInH3 = document.querySelector("#furthest");
+
+    closestIdInH3.textContent = closestCityPara.name;
+    furthestIdInH3.textContent = furthestCityPara.name;
+
+}
 
 
 
@@ -130,30 +156,7 @@ function updateCityBoxes(targetCityName) {
     }
 }
 
-//Kollar om staden finns i "cities" 
-function isCityFound(target) {
-    let cityFound = false;
-    let chosenCity = null;
-    const targetLC = target.toLowerCase();
 
-    // Sätter "chosenCity" till T/F om "target" matchar något namn i "cities"
-    for (let cityValue of cities) {
-        const cityValueLC = cityValue.name.toLowerCase();
-        titleElem = document.querySelector("title");
-
-        if (targetLC == cityValueLC) {  // Jämför target med indexerad (chosenCity) array i Cities
-            cityFound = true;
-            h2.textContent = target + " (" + cityValue.country + ")";
-            chosenCity = cityValue;
-            titleElem.innerText = cityValue.name;
-            break;
-        } else {
-            h2.textContent = target + " finns inte i databasen";
-            titleElem.innerText = "Not Found";
-        }
-    }
-    return cityFound;
-};
 
 //Avståndstabellen 
 function createDistanceTable() {
@@ -237,7 +240,6 @@ const closestCityElem = document.querySelector("#closest");
 const furthestCityElem = document.querySelector("#furthest");
 
 // Recommended: Ask for the city name and then the rest of the code
-
 const target = prompt("Vilken stad?");
 const targetPara = getTargetedCityByName(target);
 
@@ -253,7 +255,7 @@ if (targetPara !== null) {
     markCityBox(varClosestCity, "closest");
     markCityBox(varFurthestCity, "furthest");
 
-    boxDistanceText(varFurthestCity, varClosestCity);
+    distanceBoxText(varFurthestCity, varClosestCity);
 
     h2Elem.textContent = targetPara.name + " (" + targetPara.country + ")";
     titleElem.innerHTML = targetPara.name;
