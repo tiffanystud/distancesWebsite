@@ -10,20 +10,35 @@ function createCityBoxes() {
 
 }
 
-//Funktion för att markera cityBox som target, closest eller furthest
-function markCityBox(cityObject, kindOfCity) {
-    //Hämta alla stadselement (cityBox) som har klassen "cityBox"
-    const cityBoxes = document.querySelectorAll(".cityBox");
+function markCityBox(kindOfCityElem, kindOfClassPara) {
 
-    //Iterera genom alla cityBox-divar och uppdatera klasser baserat på stadens namn
-    for (let cityBox of cityBoxes) {
-        if (cityBox.textContent === cityObject.name) {
-            cityBox.classList.add(kindOfCity);
+    const cityBoxes = document.querySelectorAll(".cityBox");
+    let cityBox = null;
+
+    for (let varBox of cityBoxes) {
+        if (varBox.textContent === kindOfCityElem.name) {
+            cityBox = varBox;
+            break;
+
+        }
+    }
+
+    if (cityBox) {
+        if (kindOfClassPara === "target") {
+            cityBox.classList.add(kindOfClassPara);
+
         } else {
-            //Ta bort klasserna closest och furthest för de andra städerna
-            if (kindOfCity === "closest" || kindOfCity === "furthest") {
-                cityBox.classList.remove(kindOfCity);
+            let cityIdH3;
+
+            if (kindOfClassPara === "closest") {
+                cityIdH3 = closestCityElem.id;
+
+            } else {
+                cityIdH3 = furthestCityElem.id;
+
             }
+
+            cityBox.classList.add(cityIdH3);
         }
     }
 }
