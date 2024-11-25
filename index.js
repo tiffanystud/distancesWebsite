@@ -54,6 +54,18 @@ function findCityById(keyOppositeValuePara) {
     return null;
 }
 
+function getTargetedCityByName(cityName) {
+
+    for (let city of cities) {
+        if (city.name.toLowerCase() === cityName.toLowerCase()) {
+            return city;
+        }
+    }
+
+    return null;
+}
+
+
 //Hitta staden som ligger närmst och länsgt bort från vald stad
 function findClosestAndFurthest(targetCityId) {
     let closestCity = null;
