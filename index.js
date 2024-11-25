@@ -65,35 +65,44 @@ function getTargetedCityByName(cityName) {
     return null;
 }
 
+function getCityByDistance(targetPara, farOrClosePara) {
+    let varTargetCity = null;
+    let setOppositeDistance;
 
-//Hitta staden som ligger närmst och länsgt bort från vald stad
-function findClosestAndFurthest(targetCityId) {
-    let closestCity = null;
-    let furthestCity = null;
-    let minDistance = Number.MAX_VALUE;  //Använd ett stort värde som initialvärde
-    let maxDistance = -1;  //Använd ett litet värde som initialvärde
+    if (farOrClosePara) {
+        setOppositeDistance = Infinity;
+    } else {
+        setOppositeDistance = -10;
+    }
 
-    // Iterera genom alla avstånd för att hitta närmaste och längsta stad
-    for (let dist of distances) {
-        // Kolla om targetCityId är antingen city1 eller city2 i avståndsobjektet
-        if (dist.city1 === targetCityId || dist.city2 === targetCityId) {
-            // Bestäm den andra staden i distansobjektet
-            const otherCityId = (dist.city1 === targetCityId) ? dist.city2 : dist.city1;
-            const distance = dist.distance;  // Avståndet mellan de två städerna
+    for (let varDistance of distances) {
+        if ([varDistance.city1, varDistance.city2].includes(targetPara.id)) {
 
-            // Kontrollera om detta avstånd är närmast eller längst
-            if (distance < minDistance) {
-                minDistance = distance;
-                closestCity = otherCityId;
+
+            let keyOppositeValue;
+            if (varDistance.city1 === targetPara.id) {
+                keyOppositeValue = varDistance.city2;
+            } else {
+                keyOppositeValue = varDistance.city1;
             }
-            if (distance > maxDistance) {
-                maxDistance = distance;
-                furthestCity = otherCityId;
+
+            if 
+            (
+                (farOrClosePara && varDistance.distance < setOppositeDistance)
+                ||
+                (!farOrClosePara && varDistance.distance > setOppositeDistance)
+            ) {
+                setOppositeDistance = varDistance.distance;
+                varTargetCity = findCityById(keyOppositeValue);
             }
         }
     }
 
-    return { closestCity, furthestCity };
+    if (varTargetCity) {
+        varTargetCity.distance = setOppositeDistance;
+    }
+
+    return varTargetCity;
 }
 
 //Sätter rätt klasser på elementen utefter vald stad, closest och furthest
