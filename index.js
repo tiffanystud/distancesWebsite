@@ -8,7 +8,7 @@ function createCityBoxes() {
         cityBox.classList.add("cityBox");
         cityBox.textContent = city.name;
 
-        citiesDiv.appendChild(cityBox);
+        citiesElem.appendChild(cityBox);
     }
 
 }
@@ -88,11 +88,11 @@ function getCityByDistance(targetPara, farOrClosePara) {
                 keyOppositeValue = varDistance.city1;
             }
 
-            if 
-            (
-                (farOrClosePara && varDistance.distance < setOppositeDistance)
-                ||
-                (!farOrClosePara && varDistance.distance > setOppositeDistance)
+            if (
+                (
+                    farOrClosePara && varDistance.distance < setOppositeDistance)
+                || (
+                    !farOrClosePara && varDistance.distance > setOppositeDistance)
             ) {
                 setOppositeDistance = varDistance.distance;
                 varTargetCity = findCityById(keyOppositeValue);
@@ -131,118 +131,77 @@ function distanceBoxText(furthestCityPara, closestCityPara) {
 
 }
 
-
-
-
-//Sätter rätt klasser på elementen utefter vald stad, closest och furthest
-function updateCityBoxes(targetCityName) {
-    //Hitta den stad som användaren valt inkl. LC
-    const targetCity = cities.find(city => city.name.toLowerCase() === targetCityName.toLowerCase());
-
-    if (targetCity) {
-        //Markera den valda staden som "target"
-        markCityBox(targetCity, "target");
-
-        //Hitta närmaste och längst bort städerna
-        const { closestCity, furthestCity } = findClosestAndFurthest(targetCity.id);
-
-        //Hitta städerna som är närmst och längst bort 
-        const closestCityBox = cities.find(city => city.id === closestCity);
-        const furthestCityBox = cities.find(city => city.id === furthestCity);
-
-        //Sätt rätt klass på städerna som hittats
-        if (closestCityBox) markCityBox(closestCityBox, "closest");
-        if (furthestCityBox) markCityBox(furthestCityBox, "furthest");
-    }
-}
-
-
-
-//Avståndstabellen 
 function createDistanceTable() {
-    const cityIds = [];
-    for (let i = 0; i < distances.length; i++) {
-        if (!cityIds.includes(distances[i].city1)) {
-            cityIds.push(distances[i].city1);
-        }
-        if (!cityIds.includes(distances[i].city2)) {
-            cityIds.push(distances[i].city2);
-        }
-    }
+    const numberOfRows = cities.length + 1; 
+    const numberOfCols = cities.length + 1; 
 
-    cityIds.sort((a, b) => a - b);
-    const citiesCount = cityIds.length;
-    const headerRow = document.createElement("div");
-    headerRow.classList.add("head_row", "cell");
-    tableElem.appendChild(headerRow);
+    for (let varRow = 0; varRow < numberOfRows; varRow++) {
+        for (let varCol = 0; varCol < numberOfCols; varCol++) {
+            let tableCell = document.createElement("div");
+            tableCell.classList.add("cell");
 
-    for (let i = 0; i < citiesCount; i++) {
-        const colHeaderCell = document.createElement("div");
-        colHeaderCell.classList.add("head_column", "cell");
-        colHeaderCell.textContent = cityIds[i];
-        tableElem.appendChild(colHeaderCell);
-        if (i % 2 === 0) {
-            colHeaderCell.classList.add("even_col");
-        }
-    }
-
-    for (let i = 0; i < citiesCount; i++) {
-        const rowHeaderCell = document.createElement("div");
-        rowHeaderCell.classList.add("head_row", "cell");
-        const city = cities.find(city => city.id === cityIds[i]);
-        rowHeaderCell.textContent = city.id + "-" + city.name;
-        tableElem.appendChild(rowHeaderCell);
-        if (i % 2 === 0) {
-            rowHeaderCell.classList.add("even_row");
-        }
-
-        for (let j = 0; j < citiesCount; j++) {
-            const cellElem = document.createElement("div");
-            cellElem.classList.add("cell");
-            if (i % 2 === 0) {
-                cellElem.classList.add("even_row");
-            }
-            if (j % 2 === 0) {
-                cellElem.classList.add("even_col");
-            }
-
-            let distanceMiles = "";
-            for (let k = 0; k < distances.length; k++) {
-                if (
-                    (distances[k].city1 === cityIds[i] && distances[k].city2 === cityIds[j])
-                    ||
-                    (distances[k].city2 === cityIds[i] && distances[k].city1 === cityIds[j])
-                ) {
-                    distanceMiles = distances[k].distance.toString().slice(0, -1);
-                    break;
+            if (varRow === 0) {
+                tableCell.classList.add("head_row");
+                if (varCol !== 0) {
+                    tableCell.textContent = varCol - 1;
                 }
             }
-            cellElem.textContent = distanceMiles;
-            tableElem.appendChild(cellElem);
+
+            if (varRow >= 1 && varCol >= 1) {
+                const city1 = varCol - 1;
+                const city2 = varRow - 1;
+                let distanceValue = null;
+
+                for (let key in distances) {
+                    if (
+                        (distances[key].city1 === city1 && distances[key].city2 === city2) ||
+                        (distances[key].city2 === city1 && distances[key].city1 === city2)
+                    ) {
+                        distanceValue = distances[key];
+                        break;
+                    }
+                }
+
+                if (distanceValue) {
+                    tableCell.textContent = distanceValue.distance / 10;
+                }
+            }
+
+            if (varCol === 0) {
+                tableCell.classList.add("head_column");
+                if (varRow >= 1) {
+                    tableCell.textContent = cities[varRow - 1].id + "-" + cities[varRow - 1].name;
+                }
+            }
+
+            if (varCol % 2 === 1 && varRow !== 0) {
+                tableCell.classList.add("even_col");
+            }
+            if (varRow % 2 === 1) {
+                tableCell.classList.add("even_row");
+            }
+
+            tableElem.appendChild(tableCell);
         }
     }
 }
-
-
-
-
-
-
 
 
 // Recommended: constants with references to existing HTML-elements
+
+const citiesElem = document.querySelector("#cities");
 const h2Elem = document.querySelector("h2");
 const h3Elem = document.querySelector("h3");
-const citiesElem = document.querySelector("#cities");
-const tableElem = document.getElementById("table");
-const titleElem = document.head.querySelector("title");
 const closestCityElem = document.querySelector("#closest");
 const furthestCityElem = document.querySelector("#furthest");
+const tableElem = document.querySelector("#table");
+const titleElem = document.head.querySelector("title");
+
 
 // Recommended: Ask for the city name and then the rest of the code
-const target = prompt("Vilken stad?");
-const targetPara = getTargetedCityByName(target);
 
+const target = prompt("Enter the name of a city:");
+const targetPara = getTargetedCityByName(target);
 
 createCityBoxes();
 
