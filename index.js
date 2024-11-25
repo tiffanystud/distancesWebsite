@@ -78,7 +78,6 @@ function getCityByDistance(targetPara, farOrClosePara) {
     for (let varDistance of distances) {
         if ([varDistance.city1, varDistance.city2].includes(targetPara.id)) {
 
-
             let keyOppositeValue;
             if (varDistance.city1 === targetPara.id) {
                 keyOppositeValue = varDistance.city2;
@@ -104,6 +103,10 @@ function getCityByDistance(targetPara, farOrClosePara) {
 
     return varTargetCity;
 }
+
+
+
+
 
 //Sätter rätt klasser på elementen utefter vald stad, closest och furthest
 function updateCityBoxes(targetCityName) {
@@ -218,10 +221,22 @@ function createDistanceTable() {
 }
 
 // Recommended: constants with references to existing HTML-elements
-const h2 = document.querySelector("h2");
-const h3 = document.querySelector("h3");
-const divCities = document.getElementById("cities");
+const h2Elem = document.querySelector("h2");
+const h3Elem = document.querySelector("h3");
+const citiesElem = document.querySelector("#cities");
 const tableElem = document.getElementById("table");
+const titleElem = document.head.querySelector("title");
+const closestCityElem = document.querySelector("#closest");
+const furthestCityElem = document.querySelector("#furthest");
+
+const target = prompt("Vilken stad?");
+const targetPara = getTargetedCityByName(target);
+
+
+
+
+
+
 
 // Exempel på att skapa alla stadselement
 let divCitiesElem = document.getElementById("cities");
@@ -230,7 +245,6 @@ for (let city of cities) {
     divCitiesElem.append(createAllCityBoxes(city));
 }
 
-const target = prompt("Vilken stad?");
 
 const cityMatched = isCityFound(target);
 
