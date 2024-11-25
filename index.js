@@ -200,7 +200,7 @@ const titleElem = document.head.querySelector("title");
 
 // Recommended: Ask for the city name and then the rest of the code
 
-const target = prompt("Enter the name of a city:");
+const target = prompt("Vilken stad?");
 const targetPara = getTargetedCityByName(target);
 
 createCityBoxes();
@@ -221,7 +221,7 @@ if (targetPara !== null) {
 
 } else {
 
-    h2Elem.textContent = target + " is not in the database";
+    h2Elem.textContent = target + " finns inte i databasen";
     h3Elem.style.display = "none";
     titleElem.innerHTML = "Not Found";
 
