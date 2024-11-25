@@ -1,9 +1,13 @@
-// Skapar divar för varje stad som appendar vid funktionsanrop.
-function createAllCityBoxes(city) {
-    const cityDiv = document.createElement("div");
-    cityDiv.classList.add("cityBox");
-    cityDiv.textContent = city.name;
-    return cityDiv;
+function createCityBoxes() {
+
+    for (let city of cities) {
+        let cityBox = document.createElement("div");
+        cityBox.classList.add("cityBox");
+        cityBox.textContent = city.name;
+
+        citiesDiv.appendChild(cityBox);
+    }
+
 }
 
 //Funktion för att markera cityBox som target, closest eller furthest
@@ -28,8 +32,8 @@ function markCityBox(cityObject, kindOfCity) {
 function findClosestAndFurthest(targetCityId) {
     let closestCity = null;
     let furthestCity = null;
-    let minDistance = Number.MAX_VALUE;  // Använd ett stort värde som initialvärde
-    let maxDistance = -1;  // Använd ett litet värde som initialvärde
+    let minDistance = Number.MAX_VALUE;  //Använd ett stort värde som initialvärde
+    let maxDistance = -1;  //Använd ett litet värde som initialvärde
 
     // Iterera genom alla avstånd för att hitta närmaste och längsta stad
     for (let dist of distances) {
