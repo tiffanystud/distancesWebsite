@@ -220,6 +220,13 @@ function createDistanceTable() {
     }
 }
 
+
+
+
+
+
+
+
 // Recommended: constants with references to existing HTML-elements
 const h2Elem = document.querySelector("h2");
 const h3Elem = document.querySelector("h3");
@@ -229,27 +236,34 @@ const titleElem = document.head.querySelector("title");
 const closestCityElem = document.querySelector("#closest");
 const furthestCityElem = document.querySelector("#furthest");
 
+// Recommended: Ask for the city name and then the rest of the code
+
 const target = prompt("Vilken stad?");
 const targetPara = getTargetedCityByName(target);
 
 
+createCityBoxes();
 
+if (targetPara !== null) {
+    markCityBox(targetPara, "target");
 
+    const varClosestCity = getClosestCity(targetPara);
+    const varFurthestCity = getFurthestCity(targetPara);
 
+    markCityBox(varClosestCity, "closest");
+    markCityBox(varFurthestCity, "furthest");
 
+    boxDistanceText(varFurthestCity, varClosestCity);
 
-// Exempel på att skapa alla stadselement
-let divCitiesElem = document.getElementById("cities");
+    h2Elem.textContent = targetPara.name + " (" + targetPara.country + ")";
+    titleElem.innerHTML = targetPara.name;
 
-for (let city of cities) {
-    divCitiesElem.append(createAllCityBoxes(city));
+} else {
+
+    h2Elem.textContent = target + " is not in the database";
+    h3Elem.style.display = "none";
+    titleElem.innerHTML = "Not Found";
+
 }
 
-
-const cityMatched = isCityFound(target);
-
-//Uppdatera städerna och markera target, closest och furthest
-updateCityBoxes(target);
-
-// Skapa avståndstabellen
-createDistanceTable();  
+createDistanceTable();
