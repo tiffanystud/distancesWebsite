@@ -1,20 +1,25 @@
 
 // Recommended: All functions declared here
 
-function createCityBoxes() {
+function getTargetedCityByName(cityName) {
+    for (let city of cities) {
+        if (city.name.toLowerCase() === cityName.toLowerCase()) {
+            return city;
+        }
+    }
+    return null;
+}
 
+function createCityBoxes() {
     for (let city of cities) {
         let cityBox = document.createElement("div");
         cityBox.classList.add("cityBox");
         cityBox.textContent = city.name;
-
         citiesElem.appendChild(cityBox);
     }
-
 }
 
 function markCityBox(kindOfCityElem, kindOfClassPara) {
-
     const cityBoxes = document.querySelectorAll(".cityBox");
     let cityBox = null;
 
@@ -22,50 +27,30 @@ function markCityBox(kindOfCityElem, kindOfClassPara) {
         if (varBox.textContent === kindOfCityElem.name) {
             cityBox = varBox;
             break;
-
         }
     }
 
     if (cityBox) {
         if (kindOfClassPara === "target") {
             cityBox.classList.add(kindOfClassPara);
-
         } else {
             let cityIdH3;
-
             if (kindOfClassPara === "closest") {
                 cityIdH3 = closestCityElem.id;
-
             } else {
                 cityIdH3 = furthestCityElem.id;
-
             }
-
             cityBox.classList.add(cityIdH3);
         }
     }
 }
 
-function findCityById(keyOppositeValuePara) {
-
-    for (let varCity of cities) {
-        if (varCity.id === keyOppositeValuePara) {
-            return varCity;
-        }
-    }
-
-    return null;
+function getClosestCity(targetPara) {
+    return getCityByDistance(targetPara, true);
 }
 
-function getTargetedCityByName(cityName) {
-
-    for (let city of cities) {
-        if (city.name.toLowerCase() === cityName.toLowerCase()) {
-            return city;
-        }
-    }
-
-    return null;
+function getFurthestCity(targetPara) {
+    return getCityByDistance(targetPara, false);
 }
 
 function getCityByDistance(targetPara, farOrClosePara) {
@@ -80,7 +65,6 @@ function getCityByDistance(targetPara, farOrClosePara) {
 
     for (let varDistance of distances) {
         if ([varDistance.city1, varDistance.city2].includes(targetPara.id)) {
-
             let keyOppositeValue;
             if (varDistance.city1 === targetPara.id) {
                 keyOppositeValue = varDistance.city2;
@@ -89,10 +73,8 @@ function getCityByDistance(targetPara, farOrClosePara) {
             }
 
             if (
-                (
-                    farOrClosePara && varDistance.distance < setOppositeDistance)
-                || (
-                    !farOrClosePara && varDistance.distance > setOppositeDistance)
+                (farOrClosePara && varDistance.distance < setOppositeDistance) ||
+                (!farOrClosePara && varDistance.distance > setOppositeDistance)
             ) {
                 setOppositeDistance = varDistance.distance;
                 varTargetCity = findCityById(keyOppositeValue);
@@ -107,16 +89,16 @@ function getCityByDistance(targetPara, farOrClosePara) {
     return varTargetCity;
 }
 
-function getClosestCity(targetPara) {
-    return getCityByDistance(targetPara, true);
-}
-
-function getFurthestCity(targetPara) {
-    return getCityByDistance(targetPara, false);
+function findCityById(keyOppositeValuePara) {
+    for (let varCity of cities) {
+        if (varCity.id === keyOppositeValuePara) {
+            return varCity;
+        }
+    }
+    return null;
 }
 
 function distanceBoxText(furthestCityPara, closestCityPara) {
-    
     const closestBoxElem = document.querySelector(".closest");
     const furthestBoxElem = document.querySelector(".furthest");
 
@@ -128,12 +110,11 @@ function distanceBoxText(furthestCityPara, closestCityPara) {
 
     closestIdInH3.textContent = closestCityPara.name;
     furthestIdInH3.textContent = furthestCityPara.name;
-
 }
 
 function createDistanceTable() {
-    const numberOfRows = cities.length + 1; 
-    const numberOfCols = cities.length + 1; 
+    const numberOfRows = cities.length + 1;
+    const numberOfCols = cities.length + 1;
 
     for (let varRow = 0; varRow < numberOfRows; varRow++) {
         for (let varCol = 0; varCol < numberOfCols; varCol++) {
@@ -150,8 +131,8 @@ function createDistanceTable() {
             if (varRow >= 1 && varCol >= 1) {
                 const city1 = varCol - 1;
                 const city2 = varRow - 1;
-                let distanceValue = null;
 
+                let distanceValue = null;
                 for (let key in distances) {
                     if (
                         (distances[key].city1 === city1 && distances[key].city2 === city2) ||
@@ -177,6 +158,7 @@ function createDistanceTable() {
             if (varCol % 2 === 1 && varRow !== 0) {
                 tableCell.classList.add("even_col");
             }
+
             if (varRow % 2 === 1) {
                 tableCell.classList.add("even_row");
             }
@@ -218,13 +200,10 @@ if (targetPara !== null) {
 
     h2Elem.textContent = targetPara.name + " (" + targetPara.country + ")";
     titleElem.innerHTML = targetPara.name;
-
 } else {
-
     h2Elem.textContent = target + " finns inte i databasen";
     h3Elem.style.display = "none";
     titleElem.innerHTML = "Not Found";
-
 }
 
 createDistanceTable();
